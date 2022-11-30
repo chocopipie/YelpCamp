@@ -5,6 +5,8 @@ const path = require('path');
 const methodOverride = require('method-override');
 //const morgan = require('morgan');
 const ejsMate = require('ejs-mate'); // use ejs-mate for styling
+const session = require('express-session');
+const flash = require('connect-flash');
 const ExpressError = require('./utils/ExpressError'); // import ExpressError class from utils
 const objectID = require('mongoose').Types.ObjectId; // import mongoose object id for valid id check
 //app.use(morgan('dev'));
@@ -19,6 +21,29 @@ const reviews = require('./routes/review.js');
 app.engine('ejs', ejsMate);  
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
+app.use(express.static(path.join(__dirname, 'public'))); // use static asset - public folder
+
+const sessionConfig = {
+    secret: 'thisshouldbeabettersecret',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7, // 1000 ms * 60 * 60 * 24 * 7 - means 1 week after today
+        maxAge: 1000 * 60 * 60 * 24 * 7
+    }
+}
+
+app.use(session(sessionConfig));
+app.use(flash());
+
+// middleware to display flash 'success' on every route
+// make sure to put this before using any route handler
+app.use((req,res,next) => {
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
+    next();
+})
 
 // use the campground router set
 // make sure to place this after app.use(methodOverride)...

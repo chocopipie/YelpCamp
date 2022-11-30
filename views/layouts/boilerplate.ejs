@@ -14,6 +14,7 @@
     <%- include('../partials/navbar') %> 
     <!-- add bootstrap container for the body -->  
     <main class="container mt-5">
+        <%- include('../partials/flash') %> 
         <%- body %> 
     </main>
     <!-- call the partial for footer -->
@@ -22,27 +23,7 @@
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
 
-    <script>
-        (function () {
-      'use strict'
-    
-      // Fetch all the forms we want to apply custom Bootstrap validation styles to
-      const forms = document.querySelectorAll('.validated-form')
-    
-      // Loop over them and prevent submission
-      Array.prototype.slice.call(forms)
-        .forEach(function (form) {
-          form.addEventListener('submit', function (event) {
-            if (!form.checkValidity()) {
-              event.preventDefault()
-              event.stopPropagation()
-            }
-    
-            form.classList.add('was-validated')
-          }, false)
-        })
-    })()
-    </script>
+    <script src="/javascripts/validateformbootstrap.js"></script>
 </body>
 </html>
 

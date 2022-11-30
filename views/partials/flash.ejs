@@ -1,0 +1,18 @@
+<!-- use bootstrap alert for flash template -->
+
+<!-- check if there is a success (and its length is not zero) then create an alert for success flash-->
+<% if (success && success.length) {%> 
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <%= success %> 
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+<% } %> 
+
+
+<!-- check if there is an error (and its length is not zero) then create an alert for success flash-->
+<% if (error && error.length) {%> 
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <%= error %> 
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<% } %> 
