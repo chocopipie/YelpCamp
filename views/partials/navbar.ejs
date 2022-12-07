@@ -20,6 +20,16 @@
             <a class="nav-link disabled">Disabled</a>
           </li>
         </ul>
+        <div class="navbar-nav ms-auto">
+          <!-- currentUser is stored in session as the current user logging in -->
+          <!-- if not currentUser, show login and register, else show logout-->
+          <% if (!currentUser) {%> 
+            <a class="nav-link" href="/login">Log In</a>
+            <a class="nav-link" href="/register">Register</a>
+            <% } else { %> 
+            <a class="nav-link" href="/logout">Log Out</a>
+            <% } %>  
+        </div>
       </div>
     </div>
   </nav>

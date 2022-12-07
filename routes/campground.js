@@ -5,6 +5,7 @@ const ExpressError = require('../utils/ExpressError'); // import ExpressError cl
 const Campground = require('../models/campground'); // import campground
 const objectID = require('mongoose').Types.ObjectId; // import mongoose object id for valid id check
 const { campgroundSchema } = require('../schemas');
+const { isLoggedIn } = require('../utils/isLoggedIn'); // import function to check if user is logged in or not (library: passport)
 
 // use JOi for vaLidation
 const validateCampground = (req,res,next) => {
@@ -24,12 +25,12 @@ router.get('/', wrapAsync(async (req,res) => {
 }))
 
 // goto form to add new campground
-router.get('/new', wrapAsync(async(req,res) => {
+router.get('/new', isLoggedIn, wrapAsync(async(req,res) => {
     res.render('campgrounds/new.ejs');
 }))
 
 // create and save campground to db
-router.post('/', validateCampground, wrapAsync(async(req,res) => {
+router.post('/', isLoggedIn, validateCampground, wrapAsync(async(req,res) => {
     const newCampground = new Campground(req.body.campground);
     await newCampground.save();
     req.flash('success', 'Successfully made a new campground!'); // flash success msg before redirecting
@@ -50,7 +51,7 @@ router.get('/:id', wrapAsync(async (req, res) => {
 }))
 
 // goto form to edit campground
-router.get('/:id/edit', wrapAsync(async (req,res) => {
+router.get('/:id/edit', isLoggedIn, wrapAsync(async (req,res) => {
     const campground = await Campground.findById(req.params.id);
     // when id is valid but not found in database
     if (!campground) {
@@ -61,7 +62,7 @@ router.get('/:id/edit', wrapAsync(async (req,res) => {
 }))
 
 // make change and save to the db
-router.put('/:id', validateCampground, wrapAsync(async (req,res) => {
+router.put('/:id', isLoggedIn, validateCampground, wrapAsync(async (req,res) => {
     const { id } = req.params;
     if (!objectID.isValid(id)) throw new ExpressError('Invalid ID', 400);
     const campground = await Campground.findByIdAndUpdate(id, req.body.campground);
@@ -70,7 +71,7 @@ router.put('/:id', validateCampground, wrapAsync(async (req,res) => {
 }))
 
 // delete 1 item by id
-router.delete('/:id', wrapAsync(async (req,res) => {
+router.delete('/:id', isLoggedIn, wrapAsync(async (req,res) => {
     const { id } = req.params;
     if (!objectID.isValid(id)) throw new ExpressError('Invalid ID', 400);
     await Campground.findByIdAndDelete(id);

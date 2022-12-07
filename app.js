@@ -9,14 +9,18 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const ExpressError = require('./utils/ExpressError'); // import ExpressError class from utils
 const objectID = require('mongoose').Types.ObjectId; // import mongoose object id for valid id check
+const passport = require('passport');  // require passport 
+const LocalStrategy = require('passport-local'); // require passport strategy
+const User = require('./models/user.js'); // require user model
 //app.use(morgan('dev'));
 
 // const { application } = require('express');
 // const { addAbortSignal } = require('stream');
 // const { schema } = require('./models/campground');
 
-const campgrounds = require('./routes/campground.js'); // import campground routes
-const reviews = require('./routes/review.js');
+const userRoutes = require('./routes/user.js');
+const campgroundRoutes = require('./routes/campground.js'); // import campground routes
+const reviewRoutes = require('./routes/review.js');
 
 app.engine('ejs', ejsMate);  
 app.use(express.urlencoded({ extended: true }));
@@ -34,21 +38,42 @@ const sessionConfig = {
     }
 }
 
+// middlewares for session and flash
 app.use(session(sessionConfig));
 app.use(flash());
+
+// middlewares for passport
+app.use(passport.initialize()); // initialize passport
+app.use(passport.session());  // use session for persistent login - MAKE SURE THAT app.use(session()); IS BEFORE THIS LINE
+
+// choose a strategy for passport to use (passport-local) which will be located on User model
+passport.use(new LocalStrategy(User.authenticate())); 
+
+passport.serializeUser(User.serializeUser()); // how we store user in session
+passport.deserializeUser(User.deserializeUser()); // how we unstore a user in session
 
 // middleware to display flash 'success' on every route
 // make sure to put this before using any route handler
 app.use((req,res,next) => {
+    // check if there is a returnTo url in session (url b4 redirecting to login)
+    // ***
+    if (req.session.returnTo) {
+        res.locals.returnTo = req.session.returnTo;
+    }
+    // ***
+    //By default, when authentication succeeds, the req.user property is set to the authenticated use
+    res.locals.currentUser = req.user; // set req.user to currentUser of session
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
     next();
 })
 
+
 // use the campground router set
 // make sure to place this after app.use(methodOverride)...
-app.use('/campgrounds', campgrounds);
-app.use('/campgrounds/:id/reviews', reviews);
+app.use('/campgrounds', campgroundRoutes);
+app.use('/campgrounds/:id/reviews', reviewRoutes);
+app.use('/', userRoutes);
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));

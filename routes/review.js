@@ -7,6 +7,7 @@ const objectID = require('mongoose').Types.ObjectId; // import mongoose object i
 const Campground = require('../models/campground');
 const Review = require('../models/review');
 const { reviewSchema } = require('../schemas');
+const { isLoggedIn } = require('../utils/isLoggedIn'); // import function to check if user is logged in or not (library: passport)
 
 const validateReview = (req,res,next) => {
     const { error } = reviewSchema.validate(req.body);
@@ -19,7 +20,7 @@ const validateReview = (req,res,next) => {
 }
 
 // create and save a new review to db
-router.post('/', validateReview, wrapAsync(async (req,res) => {
+router.post('/', isLoggedIn, validateReview, wrapAsync(async (req,res) => {
     const campground = await Campground.findById(req.params.id); // find the campground we are adding rv too
     const review = new Review(req.body.review);
     campground.reviews.push(review);
@@ -30,7 +31,7 @@ router.post('/', validateReview, wrapAsync(async (req,res) => {
 }))
 
 // delete a review
-router.delete('/:reviewId', (wrapAsync(async (req,res) => {
+router.delete('/:reviewId', isLoggedIn, (wrapAsync(async (req,res) => {
     const { id, reviewId } = req.params;
     await Campground.findByIdAndUpdate(id, {$pull: {reviews: reviewId}})
     await Review.findByIdAndDelete(reviewId);
