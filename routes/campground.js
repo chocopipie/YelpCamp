@@ -6,26 +6,24 @@ const { isLoggedIn } = require('../utils/isLoggedIn'); // import middleware to c
 const { isCampgroundAuthor } = require('../utils/isAuthor.js'); // import middleware to check if current user is the author 
 const { validateCampground } = require('../utils/validateModel.js'); // import middleware to check information input (for create and update)
 
-// display all campgrounds
-router.get('/', wrapAsync(campground.index))
+
+router.route('/')
+    .get(wrapAsync(campground.index)) // display all campgrounds
+    .post(isLoggedIn, validateCampground, wrapAsync(campground.createCampground)); // create and save campground to db
 
 // goto form to add new campground
 router.get('/new', isLoggedIn, campground.renderNewForm);
 
-// create and save campground to db
-router.post('/', isLoggedIn, validateCampground, wrapAsync(campground.createCampground))
-
-// display single campground
-router.get('/:id', wrapAsync(campground.showCampground));
+router.route('/:id')
+    .get(wrapAsync(campground.showCampground)) // display single campground
+    .put(isLoggedIn, isCampgroundAuthor, validateCampground, wrapAsync(campground.updateCampground)) // make change and save to the db
+    .delete(isLoggedIn, isCampgroundAuthor, wrapAsync(campground.deleteCampground)); // delete 1 item by id
 
 // goto form to edit campground
 router.get('/:id/edit', isLoggedIn, isCampgroundAuthor, wrapAsync(campground.renderEditForm));
 
-// make change and save to the db
-router.put('/:id', isLoggedIn, isCampgroundAuthor, validateCampground, wrapAsync(campground.updateCampground));
 
-// delete 1 item by id
-router.delete('/:id', isLoggedIn, isCampgroundAuthor, wrapAsync(campground.deleteCampground));
+
 
 // export router
 module.exports = router;

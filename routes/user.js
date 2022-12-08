@@ -4,13 +4,13 @@ const wrapAsync = require('../utils/wrapAsync'); // import wrapAsync function fr
 const user = require('../controllers/users.js'); // import the user controller
 const passport = require('passport');
 
-router.get('/register', user.renderRegisterForm);
+router.route('/register')
+    .get(user.renderRegisterForm)
+    .post(wrapAsync(user.registerUser));
 
-router.post('/register', wrapAsync(user.registerUser));
-
-router.get('/login', user.renderLoginForm);
-
-router.post('/login', passport.authenticate('local', {failureFlash: true, failureRedirect: '/login'}), user.loginUser);
+router.route('/login')
+    .get(user.renderLoginForm)
+    .post(passport.authenticate('local', {failureFlash: true, failureRedirect: '/login'}), user.loginUser);
 
 router.get('/logout', user.logoutUser);
 
