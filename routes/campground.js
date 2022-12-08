@@ -32,6 +32,7 @@ router.get('/new', isLoggedIn, wrapAsync(async(req,res) => {
 // create and save campground to db
 router.post('/', isLoggedIn, validateCampground, wrapAsync(async(req,res) => {
     const newCampground = new Campground(req.body.campground);
+    newCampground.author = req.user._id; // save current user id to author of newCampground (the person that signed in and create new campground)
     await newCampground.save();
     req.flash('success', 'Successfully made a new campground!'); // flash success msg before redirecting
     res.redirect(`campgrounds/${newCampground._id}`);
@@ -41,7 +42,8 @@ router.post('/', isLoggedIn, validateCampground, wrapAsync(async(req,res) => {
 router.get('/:id', wrapAsync(async (req, res) => {
     const { id } = req.params;
     if (!objectID.isValid(id)) throw new ExpressError('Invalid ID', 400); // when id is invalid
-    const campground = await Campground.findById(id).populate('reviews');
+    const campground = await Campground.findById(id).populate('reviews').populate('author');
+    console.log(campground.author);
     // when id is valid but not found in database
     if (!campground) {
         req.flash('error', 'Cannot find that campground!'); // flash error 
