@@ -7,6 +7,7 @@ const Campground = require('../models/campground');
 const Review = require('../models/review');
 const { isLoggedIn } = require('../utils/isLoggedIn'); // import function to check if user is logged in or not (library: passport)
 const { validateReview } = require('../utils/validateModel.js'); // import middleware to check information input (for create and update)
+const { isReviewAuthor } = require('../utils/isAuthor.js'); // import middleware to check if current user is the author 
 
 // create and save a new review to db
 router.post('/', isLoggedIn, validateReview, wrapAsync(async (req,res) => {
@@ -21,12 +22,12 @@ router.post('/', isLoggedIn, validateReview, wrapAsync(async (req,res) => {
 }))
 
 // delete a review
-router.delete('/:reviewId', isLoggedIn, (wrapAsync(async (req,res) => {
+router.delete('/:reviewId', isLoggedIn, isReviewAuthor, wrapAsync(async (req,res) => {
     const { id, reviewId } = req.params;
     await Campground.findByIdAndUpdate(id, {$pull: {reviews: reviewId}})
     await Review.findByIdAndDelete(reviewId);
     req.flash('success', 'Successfully deleted review!');
     res.redirect(`/campgrounds/${id}`);
-})))
+}))
 
 module.exports = router;
