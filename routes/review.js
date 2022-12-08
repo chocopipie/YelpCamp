@@ -12,7 +12,8 @@ const { validateReview } = require('../utils/validateModel.js'); // import middl
 router.post('/', isLoggedIn, validateReview, wrapAsync(async (req,res) => {
     const campground = await Campground.findById(req.params.id); // find the campground we are adding rv too
     const review = new Review(req.body.review);
-    campground.reviews.push(review);
+    review.author = req.user._id; // save current user id to the author id of the new review
+    campground.reviews.push(review); // add an review to campground
     await review.save();
     await campground.save();
     req.flash('success', 'Created new review!');

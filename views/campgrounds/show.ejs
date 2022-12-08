@@ -31,7 +31,9 @@
         </div>
     </div>
     <div class="col-lg-6">
-      <h2>Leave a Review</h2>
+          <!-- render the form only when a user is logged in -->
+          <% if (currentUser) { %> 
+            <h2>Leave a Review</h2>
             <form action="/campgrounds/<%=campground._id%>/reviews" method="POST" class="mb-3 validated-form" novalidate>
               <div class="mb-3">
                 <label class="form-label" for="rating">Ratings</label>
@@ -46,7 +48,7 @@
               </div>
               <button class="btn btn-success">Submit</button>
             </form>
-
+          <% } %> 
             <% for (let review of campground.reviews) { %> 
               <div class="card">
                 <div class="mb-3 card-body">
