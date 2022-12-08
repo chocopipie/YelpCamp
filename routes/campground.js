@@ -4,19 +4,9 @@ const wrapAsync = require('../utils/wrapAsync'); // import wrapAsync function fr
 const ExpressError = require('../utils/ExpressError'); // import ExpressError class from utils
 const Campground = require('../models/campground'); // import campground
 const objectID = require('mongoose').Types.ObjectId; // import mongoose object id for valid id check
-const { campgroundSchema } = require('../schemas');
-const { isLoggedIn } = require('../utils/isLoggedIn'); // import function to check if user is logged in or not (library: passport)
-
-// use JOi for vaLidation
-const validateCampground = (req,res,next) => {
-    const { error } = campgroundSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',');
-        throw new ExpressError(msg,400);
-    } else {
-        next();
-    }
-}
+const { isLoggedIn } = require('../utils/isLoggedIn'); // import middleware to check if user is logged in or not (library: passport)
+const { isAuthor } = require('../utils/isAuthor.js'); // import middleware to check if current user is the author 
+const { validateCampground } = require('../utils/validateModel.js'); // import middleware to check information input (for create and update)
 
 // display all campgrounds
 router.get('/', wrapAsync(async (req,res) => {
@@ -53,29 +43,25 @@ router.get('/:id', wrapAsync(async (req, res) => {
 }))
 
 // goto form to edit campground
-router.get('/:id/edit', isLoggedIn, wrapAsync(async (req,res) => {
-    const campground = await Campground.findById(req.params.id);
-    // when id is valid but not found in database
-    if (!campground) {
-        req.flash('error', 'Cannot find that campground!'); // flash error 
-        return res.redirect('/campgrounds');
-    }
+router.get('/:id/edit', isLoggedIn, isAuthor, wrapAsync(async (req,res) => {
+    const { id } = req.params;
+    const campground = await Campground.findById(id);// find campground from db by id
+
     res.render('campgrounds/edit.ejs', { campground });
 }))
 
 // make change and save to the db
-router.put('/:id', isLoggedIn, validateCampground, wrapAsync(async (req,res) => {
+router.put('/:id', isLoggedIn, isAuthor, validateCampground, wrapAsync(async (req,res) => {
     const { id } = req.params;
-    if (!objectID.isValid(id)) throw new ExpressError('Invalid ID', 400);
     const campground = await Campground.findByIdAndUpdate(id, req.body.campground);
     req.flash('success', 'Successfully updated campground!');
     res.redirect(`/campgrounds/${campground._id}`);
 }))
 
 // delete 1 item by id
-router.delete('/:id', isLoggedIn, wrapAsync(async (req,res) => {
+router.delete('/:id', isLoggedIn, isAuthor, wrapAsync(async (req,res) => {
     const { id } = req.params;
-    if (!objectID.isValid(id)) throw new ExpressError('Invalid ID', 400);
+    // delete
     await Campground.findByIdAndDelete(id);
     req.flash('success', 'Successfully deleted campground!');
     res.redirect('/campgrounds');

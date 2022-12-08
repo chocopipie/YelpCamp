@@ -8,7 +8,6 @@ const ejsMate = require('ejs-mate'); // use ejs-mate for styling
 const session = require('express-session');
 const flash = require('connect-flash');
 const ExpressError = require('./utils/ExpressError'); // import ExpressError class from utils
-const objectID = require('mongoose').Types.ObjectId; // import mongoose object id for valid id check
 const passport = require('passport');  // require passport 
 const LocalStrategy = require('passport-local'); // require passport strategy
 const User = require('./models/user.js'); // require user model

@@ -3,21 +3,10 @@ const router = express.Router({mergeParams: true}); // mergeparams - let review 
 
 const ExpressError = require('../utils/ExpressError'); // import ExpressError class from utils
 const wrapAsync = require('../utils/wrapAsync'); // import wrapAsync function from utils
-const objectID = require('mongoose').Types.ObjectId; // import mongoose object id for valid id check
 const Campground = require('../models/campground');
 const Review = require('../models/review');
-const { reviewSchema } = require('../schemas');
 const { isLoggedIn } = require('../utils/isLoggedIn'); // import function to check if user is logged in or not (library: passport)
-
-const validateReview = (req,res,next) => {
-    const { error } = reviewSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',');
-        throw new ExpressError(msg,400);
-    } else {
-        next();
-    }
-}
+const { validateReview } = require('../utils/validateModel.js'); // import middleware to check information input (for create and update)
 
 // create and save a new review to db
 router.post('/', isLoggedIn, validateReview, wrapAsync(async (req,res) => {
