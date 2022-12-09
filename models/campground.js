@@ -27,7 +27,6 @@ const CampgroundSchema = new Schema({
     ]
 })
 
-
 // post-middleware, happening when deleting a campground
 // after campground in Campground is deleted, delete all corresponding reviews from Review
 CampgroundSchema.post('findOneAndDelete', async function(doc) {
