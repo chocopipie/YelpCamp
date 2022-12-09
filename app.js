@@ -1,3 +1,13 @@
+// if we are running our code in development mode,
+// then we require dotenv package (take secret in .env and add it to process.env)
+// this will look for .env file in root directory
+if (process.env.NODE_ENV !== "production") {
+    require('dotenv').config();
+}
+
+console.log(process.env.CLOUDINARY_SECRET);
+console.log(process.env.CLOUDINARY_KEY);
+
 const mongoose = require('mongoose');
 const express = require('express');
 const app = express();

@@ -16,6 +16,10 @@ module.exports.renderNewForm = (req,res) => {
 // function to create a new campground and save to db
 module.exports.createCampground = async(req,res) => {
     const newCampground = new Campground(req.body.campground);
+    // req.files is an array of image files (by multer - return from multipart form)
+    // for each file (f) in files array,
+    // take f.path and f.filename, map them as an object (key: url, filename) in newCampground.images array
+    newCampground.images = req.files.map(f => ({url: f.path, filename: f.filename})) 
     newCampground.author = req.user._id; // save current user id to author of newCampground (the person that signed in and create new campground)
     await newCampground.save();
     req.flash('success', 'Successfully made a new campground!'); // flash success msg before redirecting

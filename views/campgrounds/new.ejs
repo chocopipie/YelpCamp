@@ -5,7 +5,7 @@
     <h1 class="text-center">New Campground</h1>
     <!-- offset-3 move the content 3 units inside-->
     <div class="col-6 offset-3"> 
-        <form action="/campgrounds" method="POST" class="validated-form" novalidate>
+        <form action="/campgrounds" method="POST" class="validated-form" novalidate enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
                 <input type="text" class="form-control" id="title" name="campground[title]" required>
@@ -20,13 +20,14 @@
                     Please enter location.
                 </div>
             </div>
-            <div class="mb-3">
+            <input type="file" name="image" id="" multiple>
+            <!--<div class="mb-3">
                 <label for="image" class="form-label">Image URL</label>
                 <input type="text" class="form-control" id="image" name="campground[image]" required>
                 <div class="invalid-feedback">
                     Please add the image link.
                 </div>
-            </div>
+            </div> -->
             <div class="mb-3">
                 <label for="price" class="form-label">Campground Price</label>
                 <div class="input-group">
