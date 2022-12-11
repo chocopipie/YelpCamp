@@ -17,7 +17,7 @@ router.get('/new', isLoggedIn, campground.renderNewForm);
 
 router.route('/:id')
     .get(wrapAsync(campground.showCampground)) // display single campground
-    .put(isLoggedIn, isCampgroundAuthor, validateCampground, wrapAsync(campground.updateCampground)) // make change and save to the db
+    .put(isLoggedIn, isCampgroundAuthor, upload.array('image'), validateCampground, wrapAsync(campground.updateCampground)) // make change and save to the db
     .delete(isLoggedIn, isCampgroundAuthor, wrapAsync(campground.deleteCampground)); // delete 1 item by id
 
 // goto form to edit campground

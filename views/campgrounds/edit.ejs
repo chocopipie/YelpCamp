@@ -5,7 +5,7 @@
         <h1 class="text-center">Edit Campground</h1>
         <!-- offset-3 move the content 3 units inside-->
         <div class="col-6 offset-3"> 
-            <form action="/campgrounds/<%=campground._id%>?_method=PUT" method="POST" class="validated-form" novalidate>
+            <form action="/campgrounds/<%=campground._id%>?_method=PUT" method="POST" class="validated-form" novalidate enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="title" class="form-label">Title</label>
                     <input type="text" class="form-control" id="title" name="campground[title]" value="<%=campground.title%>" required>
@@ -20,12 +20,9 @@
                         Please enter location.
                     </div>
                 </div>
-                <div class="mb-3">
-                    <label for="image" class="form-label">Image URL</label>
-                    <input type="text" class="form-control" id="image" name="campground[image]" value="<%=campground.image%>" required>
-                    <div class="invalid-feedback">
-                        Please add an image link.
-                    </div>
+                <div class="input-group mb-3">
+                    <input type="file" class="form-control" name="image" id="image" multiple>
+                    <label class="input-group-text" for="image">Add more images</label>
                 </div>
                 <div class="mb-3">
                     <label for="price" class="form-label">Campground Price</label>
