@@ -2,6 +2,9 @@ const { cloudinary } = require('../cloudinary');
 const Campground = require('../models/campground'); // import campground model
 const ExpressError = require('../utils/ExpressError'); // import ExpressError class from utils
 const objectID = require('mongoose').Types.ObjectId; // import mongoose object id for valid id check
+const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding'); // import mapbox service factory function (here we use Geocoding service)
+const mapBoxToken = process.env.MAPBOX_TOKEN; // we save token in .env file
+const geocoder = mbxGeocoding({accessToken: mapBoxToken}); // create service client
 
 // function to find all campgrounds
 module.exports.index = async (req,res) => {
@@ -16,6 +19,11 @@ module.exports.renderNewForm = (req,res) => {
 
 // function to create a new campground and save to db
 module.exports.createCampground = async(req,res) => {
+    const geoData = await geocoder.forwardGeocode({
+        query: req.body.campground.location,
+        limit: 1
+    }).send();
+    console.log(geoData.body.features[0].geometry.coordinates);
     const newCampground = new Campground(req.body.campground);
     // req.files is an array of image files (by multer - return from multipart form)
     // for each file (f) in files array,
