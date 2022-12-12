@@ -1,3 +1,4 @@
+const { cloudinary } = require('../cloudinary');
 const Campground = require('../models/campground'); // import campground model
 const ExpressError = require('../utils/ExpressError'); // import ExpressError class from utils
 const objectID = require('mongoose').Types.ObjectId; // import mongoose object id for valid id check
@@ -55,12 +56,23 @@ module.exports.renderEditForm = async (req,res) => {
 // function to update campground and save to db
 module.exports.updateCampground = async (req,res) => {
     const { id } = req.params;
+    console.log(req.body)
     const campground = await Campground.findByIdAndUpdate(id, req.body.campground);
             // req.files is an array of image files (by multer - return from multipart form)
     // for each file (f) in files array,
     // take f.path and f.filename, map them as an object (key: url, filename) in a new array
     const imageArray = req.files.map(f => ({url: f.path, filename: f.filename}));
     campground.images.push(...imageArray);
+    if (req.body.deleteImages) {
+        // delete img from cloudinary
+        for (let image of req.body.deleteImages) {
+            await cloudinary.uploader.destroy(image);
+        }
+        // delete img from db
+        await campground.updateOne(
+            {$pull: {images: {filename: {$in: req.body.deleteImages}}}}
+        )
+    }
     await campground.save();
     req.flash('success', 'Successfully updated campground!');
     res.redirect(`/campgrounds/${campground._id}`);

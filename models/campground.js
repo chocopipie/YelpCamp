@@ -4,14 +4,22 @@ const mongoose = require('mongoose');
 const Review = require('./review');
 const Schema = mongoose.Schema;
 
+const ImageSchema = new Schema({
+    url: String,
+    filename: String
+});
+
+// every image will have width 200 (w_200)
+// link to a single image: https://res.cloudinary.com/dmrxxot2x/image/upload/v1670827501/YelpCamp/g3va1oipuetgmh1cg0pu.jpg
+// adding /w_200 after /upload will set the width of the img to 200pixels
+// so, here we are trying to plug that in the url
+ImageSchema.virtual('thumbnail').get(function() {
+    return this.url.replace('/upload', '/upload/w_200');
+});
+
 const CampgroundSchema = new Schema({
     title: String,
-    images: [
-        {
-            url: String,
-            filename: String
-        }
-    ],
+    images: [ImageSchema],
     price: Number,
     description: String,
     location: String,
