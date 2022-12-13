@@ -1,6 +1,7 @@
 <% layout('layouts/boilerplate') %> 
 
 <link rel="stylesheet" href="/stylesheets/reviewStars.css">
+
 <div class="row">
     <div class="col-lg-6">
       <!-- carousel to display imgs-->
@@ -25,7 +26,6 @@
           </button>
         <% } %> 
       </div>
-
 
       <div class="card mb-3">
           <div class="card-body">
@@ -55,6 +55,7 @@
       </div>
     </div>
     <div class="col-lg-6">
+        <div id='map' style='width: 400px; height: 300px;'></div>
         <div class="mb-5">
           <!-- render the form only when a user is logged in -->
           <% if (currentUser) { %> 
@@ -104,3 +105,9 @@
             <% } %> 
     </div>
 </div>
+
+<script>
+  const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
+  const campground = '<%-JSON.stringify(campground)%>';
+</script>
+<script src="/javascripts/showPageMap.js"></script>

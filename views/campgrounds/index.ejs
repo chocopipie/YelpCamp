@@ -8,7 +8,12 @@
         <div class="card mb-3">
             <div class="row">
                 <div class="col-md-4">
-                    <img class="img-fluid" src="<%=campground.images[0].url%>" alt="n/a">
+                    <!-- if campground has any image (campground.image.length > 0)-->
+                    <% if(campground.images.length) { %> 
+                        <img class="img-fluid" src="<%=campground.images[0].url%>" alt="n/a">
+                    <% } else { %> 
+                        <img class="img-fluid" src="https://2.bp.blogspot.com/-qRxtFaB7jx8/X1nCRlHt9nI/AAAAAAAAJUg/H78LryanWb8WSFiaN4wq59gcjo9mo11lQCNcBGAsYHQ/s640/arti%2Bna.jpg" alt="n/a">
+                    <% } %> 
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">

@@ -23,8 +23,9 @@ module.exports.createCampground = async(req,res) => {
         query: req.body.campground.location,
         limit: 1
     }).send();
-    console.log(geoData.body.features[0].geometry.coordinates);
     const newCampground = new Campground(req.body.campground);
+    // set the location to newCampground.geometry
+    newCampground.geometry = geoData.body.features[0].geometry;
     // req.files is an array of image files (by multer - return from multipart form)
     // for each file (f) in files array,
     // take f.path and f.filename, map them as an object (key: url, filename) in newCampground.images array

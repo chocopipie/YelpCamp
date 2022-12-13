@@ -39,7 +39,8 @@ const seedDB = async () => {
         const price = Math.floor(Math.random() * 100);
         const newCamp = new Campground({
             author: '638fde242a5d1667db6f9dfe',
-            location: `${cities[random1000].city}, ${cities[random1000].state}`,
+            //location: `${cities[random1000].city}, ${cities[random1000].state}`,
+            location: 'Ovando, Montana',
             title: `${sample(descriptors)} ${sample(places)}`,
             images: [
                 {
@@ -48,6 +49,10 @@ const seedDB = async () => {
                 }
             ],
             price,
+            geometry: {
+                type: "Point",
+                coordinates: [-113.1331, 47.0202]
+            },
             description: randomImage.description
         })
         await newCamp.save();
