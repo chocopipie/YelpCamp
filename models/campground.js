@@ -17,6 +17,7 @@ ImageSchema.virtual('thumbnail').get(function() {
     return this.url.replace('/upload', '/upload/w_200');
 });
 
+// add this because Mongoose does not include virtuals when you convert a document to JSON.
 const opts = {toJSON: {virtuals: true}};
 
 const CampgroundSchema = new Schema({
