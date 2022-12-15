@@ -12,7 +12,7 @@
 <body class="d-flex flex-column vh-100 text-white bg-dark">
     <header>
         <div>
-            <h2 class="p-2 float-md-start mb-0">YelpCamp</h3>
+          <a href="/"><h2 class="p-2 float-md-start mb-0 text-white">YelpCamp</h3></a>
             <nav class="p-2 nav nav-masthead justify-content-center float-md-end">
                 <% if(!currentUser) { %>
                 <a class="nav-link" href="/login">Login</a>
@@ -27,15 +27,14 @@
     <div class="container vh-100 text-center d-flex justify-content-center align-items-center">
       <div>
         <h1>Welcome to YelpCamp!</h1>
-        <a href="/campgrounds" class="btn btn-outline-info btn-lg active" role="button" aria-pressed="true">View Campgrounds</a>
       </div>
+      <a href="/campgrounds" id="viewbutton" class="btn btn-outline-info btn-lg active" role="button" aria-pressed="true">View Campgrounds</a>
     </div>
 
-    <footer class="footer bg-dark py-2 mt-auto">
-      <div class="container">
+      <div class="container py-2 mt-auto">
           <span class="text-muted">&copy; YelpCamp 2022</span>
       </div>
-  </footer>
+
 
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>

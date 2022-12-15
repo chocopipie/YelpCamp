@@ -1,38 +1,41 @@
 <!-- EJS FILE DISPLAY ALL CAMPGROUNDS -->
 <% layout('layouts/boilerplate') %> 
 
-    <div id="map" style="width:100%; height: 500px"></div>
-    <h1>All Campgrounds</h1>
 
-    <%for (let campground of campgrounds) { %>
-        <div class="card mb-3">
-            <div class="row">
-                <div class="col-md-4">
-                    <!-- if campground has any image (campground.image.length > 0)-->
-                    <% if(campground.images.length) { %> 
-                        <img class="img-fluid" src="<%=campground.images[0].url%>" alt="n/a">
-                    <% } else { %> 
-                        <img class="img-fluid" src="https://2.bp.blogspot.com/-qRxtFaB7jx8/X1nCRlHt9nI/AAAAAAAAJUg/H78LryanWb8WSFiaN4wq59gcjo9mo11lQCNcBGAsYHQ/s640/arti%2Bna.jpg" alt="n/a">
-                    <% } %> 
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h5 class="class-title"><%= campground.title %></h5>
-                        <p class="card-text"><%= campground.description%> </p>
-                        <p class="card-text">
-                            <small class="text-muted"><%= campground.location %> </small>
-                        </p>
-                        <a href="/campgrounds/<%=campground._id%>" class="btn btn-outline-info">View <%= campground.title %></a>
-                    </div>
+<div id="map" style="width:100%; height: 500px"></div>
+
+
+<h1>All Campgrounds</h1>
+
+<%for (let campground of campgrounds) { %>
+    <div class="card mb-3">
+        <div class="row">
+            <div class="col-md-4">
+                <!-- if campground has any image (campground.image.length > 0)-->
+                <% if(campground.images.length) { %> 
+                    <img class="img-fluid" src="<%=campground.images[0].url%>" alt="n/a">
+                <% } else { %> 
+                    <img class="img-fluid" src="https://2.bp.blogspot.com/-qRxtFaB7jx8/X1nCRlHt9nI/AAAAAAAAJUg/H78LryanWb8WSFiaN4wq59gcjo9mo11lQCNcBGAsYHQ/s640/arti%2Bna.jpg" alt="n/a">
+                <% } %> 
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="class-title"><%= campground.title %></h5>
+                    <p class="card-text"><%= campground.description%> </p>
+                    <p class="card-text">
+                        <small class="text-muted"><%= campground.location %> </small>
+                    </p>
+                    <a href="/campgrounds/<%=campground._id%>" class="btn btn-outline-info">View <%= campground.title %></a>
                 </div>
             </div>
         </div>
-    <%} %>
+    </div>
+<%} %>
 
 
-    <footer>
-        <a href="/campgrounds/new">Add a new campground</a>
-    </footer>
+<footer>
+    <a href="/campgrounds/new">Add a new campground</a>
+</footer>
 
 <script>
     const mapboxToken = '<%-process.env.MAPBOX_TOKEN%>';

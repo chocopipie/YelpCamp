@@ -1,0 +1,46 @@
+body{
+    background: #c9ccd1; 
+    height: 100vh;
+    background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.7)), url("https://images.unsplash.com/photo-1478131143081-80f7f84ca84d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8Y2FtcGluZ3xlbnwwfHwwfHw%3D&w=1000&q=80");
+}
+
+form.validated-form {
+    width: 300px
+}
+.form-style input{
+    border:0;
+    height:50px;
+    border-radius:0;
+    border-bottom:1px solid #ebebeb;	
+}
+.form-style input:focus{
+    border-bottom:1px solid #007bff;	
+    box-shadow:none;
+    outline:0;
+    background-color:#ebebeb;	
+}
+img {
+    max-width: 100%;
+    max-height: 100vh;
+}
+.sideline {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color:#ccc;
+}
+button{
+    height:50px;	
+}
+.sideline:before, .sideline:after {
+    content: '';
+    border-top: 1px solid #ebebeb;
+    margin: 0 20px 0 0;
+    flex: 1 0 20px;
+}
+
+.sideline:after {
+    margin: 0 0 0 20px;
+}
