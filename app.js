@@ -1,9 +1,9 @@
 // if we are running our code in development mode,
 // then we require dotenv package (take secret in .env and add it to process.env)
 // this will look for .env file in root directory
-if (process.env.NODE_ENV !== "production") {
+//if (process.env.NODE_ENV !== "production") {
     require('dotenv').config();
-}
+//}
 
 console.log(process.env.CLOUDINARY_SECRET);
 console.log(process.env.CLOUDINARY_KEY);
@@ -21,11 +21,8 @@ const ExpressError = require('./utils/ExpressError'); // import ExpressError cla
 const passport = require('passport');  // require passport 
 const LocalStrategy = require('passport-local'); // require passport strategy
 const User = require('./models/user.js'); // require user model
-//app.use(morgan('dev'));
-
-// const { application } = require('express');
-// const { addAbortSignal } = require('stream');
-// const { schema } = require('./models/campground');
+const mongoSanitize = require('express-mongo-sanitize'); //  middleware which sanitizes user-supplied data to prevent MongoDB Operator Injection.
+const helmet = require('helmet'); // secure your Express apps by setting various HTTP headers.
 
 const userRoutes = require('./routes/user.js');
 const campgroundRoutes = require('./routes/campground.js'); // import campground routes
@@ -37,8 +34,10 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public'))); // use static asset - public folder
 
 const sessionConfig = {
+    name: 'van',
     secret: 'thisshouldbeabettersecret',
     resave: false,
+    // secure: true, // cookies can only be accessible via http
     saveUninitialized: true,
     cookie: {
         httpOnly: true,
@@ -46,10 +45,15 @@ const sessionConfig = {
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
 }
+// To remove data using these defaults:
+app.use(mongoSanitize());
 
 // middlewares for session and flash
 app.use(session(sessionConfig));
 app.use(flash());
+//app.use(helmet()); - enable all middleware (default)
+// This disables the `contentSecurityPolicy` middleware but keeps the rest.
+app.use(helmet({contentSecurityPolicy: false}));
 
 // middlewares for passport
 app.use(passport.initialize()); // initialize passport
