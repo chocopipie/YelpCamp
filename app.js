@@ -28,8 +28,8 @@ const userRoutes = require('./routes/user.js');
 const campgroundRoutes = require('./routes/campground.js'); // import campground routes
 const reviewRoutes = require('./routes/review.js');
 
-//const dbUrl = process.env.DB_URL; // mongo cloud connection variable
-const dbUrl = 'mongodb://localhost:27017/yelp-camp'
+const dbUrl = process.env.DB_URL; // mongo cloud connection variable
+//const dbUrl = 'mongodb://localhost:27017/yelp-camp'
 const MongoStore = require('connect-mongo'); // mongo store for session
 
 app.engine('ejs', ejsMate);  
