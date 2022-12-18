@@ -97,3 +97,21 @@ h1:hover {
     background-position: 0% 100%;
     transition: background-position .7s, background-size .5s ease-in-out;
   }
+
+  @media (max-width:1200px) {
+    #intro {
+      font-size: 3em;
+    }
+  }
+@media (max-width:420px) {
+  #intro {
+    font-size: 3em;
+  }
+}
+
+
+@media (max-width:300px) {
+  #intro {
+    font-size: 2em;
+  }
+}

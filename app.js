@@ -28,14 +28,28 @@ const userRoutes = require('./routes/user.js');
 const campgroundRoutes = require('./routes/campground.js'); // import campground routes
 const reviewRoutes = require('./routes/review.js');
 
-const dbUrl = process.env.DB_URL; // mongo cloud connection variable
+//const dbUrl = process.env.DB_URL; // mongo cloud connection variable
+const dbUrl = 'mongodb://localhost:27017/yelp-camp'
+const MongoStore = require('connect-mongo'); // mongo store for session
 
 app.engine('ejs', ejsMate);  
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public'))); // use static asset - public folder
 
+
+const store = MongoStore.create({
+    mongoUrl: dbUrl,
+    secret: 'thisshouldbeabettersecret',
+    touchAfter: 24 * 60 * 60 // auto save if nothing change 1 day (in seconds)
+})
+
+store.on("error", function(e) {
+    console.log("SESSION STORE ERROR", e);
+})
+
 const sessionConfig = {
+    store,
     name: 'van',
     secret: 'thisshouldbeabettersecret',
     resave: false,
@@ -98,7 +112,7 @@ main().catch(err => console.log("NOT CONNECTED"));
 //dbUrl, {}
 // connect to db
 async function main() {
-  await mongoose.connect('mongodb://localhost:27017/yelp-camp');
+  await mongoose.connect(dbUrl, {});
   console.log("CONNECTED")
 }
 
