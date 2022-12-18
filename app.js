@@ -28,6 +28,8 @@ const userRoutes = require('./routes/user.js');
 const campgroundRoutes = require('./routes/campground.js'); // import campground routes
 const reviewRoutes = require('./routes/review.js');
 
+const dbUrl = process.env.DB_URL; // mongo cloud connection variable
+
 app.engine('ejs', ejsMate);  
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
@@ -92,7 +94,8 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 main().catch(err => console.log("NOT CONNECTED"));
-
+// mongodb://localhost:27017/yelp-camp
+//dbUrl, {}
 // connect to db
 async function main() {
   await mongoose.connect('mongodb://localhost:27017/yelp-camp');
