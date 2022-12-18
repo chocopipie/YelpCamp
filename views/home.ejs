@@ -15,10 +15,10 @@
           <a href="/"><h2 class="p-2 float-md-start mb-0 text-white">YelpCamp</h3></a>
             <nav class="p-2 nav nav-masthead justify-content-center float-md-end">
                 <% if(!currentUser) { %>
-                <a class="nav-link" href="/login">Login</a>
-                <a class="nav-link" href="/register">Register</a>
+                <a class="nav-link" id="login" href="/login">Login</a>
+                <a class="nav-link" id="register" href="/register">Register</a>
                 <% } else { %>
-                <a class="nav-link" href="/logout">Logout</a>
+                <a class="nav-link" id="logout" href="/logout">Logout</a>
                 <% } %>
             </nav>
         </div>
