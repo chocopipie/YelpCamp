@@ -1,19 +1,22 @@
 // THIS FILE CREATE DATA FOR DATABASE
 
+require('dotenv').config();
 
 const mongoose = require('mongoose');
 const Campground = require('../models/campground');
 const axios = require('axios');
 const cities = require('./cities');
 const {places,descriptors} = require('./seedHelpers');
+const dbUrl = process.env.DB_URL; // mongo cloud connection variable
 
 main().catch(err => console.log("NOT CONNECTED"));
 
 // connect to db
 async function main() {
-  await mongoose.connect('mongodb://localhost:27017/yelp-camp');
+  await mongoose.connect(dbUrl, {});
   console.log("CONNECTED")
 }
+
 
 // async function to make request to Unsplash API using axios
 async function getRandomImage() {

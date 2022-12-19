@@ -112,6 +112,7 @@ main().catch(err => console.log("NOT CONNECTED"));
 //dbUrl, {}
 // connect to db
 async function main() {
+    mongoose.set("strictQuery", false);
   await mongoose.connect(dbUrl, {});
   console.log("CONNECTED")
 }

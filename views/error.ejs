@@ -9,7 +9,7 @@
             <!-- if application is running of production mode, not show error stack-->
             <!-- only show error stack on development mode -->
             <% if (process.env.NODE_ENV !== "production") { %> 
-            <p style="overflow-wrap: break-word;"><%=err.stack%></p>
+                <p style="overflow-wrap: break-word;"><%=err.stack%></p>
             <% } %> 
         </div>
     </div>
