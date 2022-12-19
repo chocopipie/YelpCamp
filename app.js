@@ -5,8 +5,6 @@
     require('dotenv').config();
 //}
 
-console.log(process.env.CLOUDINARY_SECRET);
-console.log(process.env.CLOUDINARY_KEY);
 
 const mongoose = require('mongoose');
 const express = require('express');
